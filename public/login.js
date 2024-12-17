@@ -1,3 +1,13 @@
+// Function to generate SHA-256 hex digest
+async function digestMessage(message) {
+    const msgUint8 = new TextEncoder().encode(message); // encode as (utf-8) Uint8Array
+    const hashBuffer = await window.crypto.subtle.digest("SHA-256", msgUint8); // hash the message
+    const hashArray = Array.from(new Uint8Array(hashBuffer)); // convert buffer to byte array
+    const hashHex = hashArray
+      .map((b) => b.toString(16).padStart(2, "0"))
+      .join(""); // convert bytes to hex string
+    return hashHex;
+  }
 
 document.addEventListener('DOMContentLoaded', function() {
     const loginButton = document.getElementById('loginButton');
@@ -62,17 +72,20 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
-    function createAccount() {
+    async function createAccount() {
         var username = document.getElementById('newUsername').value;
         var username = username.toLowerCase()
         const livingSelect = document.getElementById('livingSelect').value;
         const photo = document.getElementById('uploadPhoto').files[0];
+        const photoType = photo.name.split(".").slice(-1)[0]
 
         if (username && photo) {
             // Add logic to handle the account creation process
 
-            photo.name = btoa(username);
-            var imageRef = storageRef.child(`img/${photo.name}`);
+            const time = await digestMessage(new Date())
+            const photoName = `${time}.${photoType}`
+            console.log(photo.name, photoName);
+            var imageRef = storageRef.child(`img/${photoName}`);
             imageRef.put(photo).on('state_changed',
             (snapshot) => {
                 const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
@@ -85,7 +98,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         firebase.database().ref('users/' + btoa(username)).set({
                             name: username,
                             livingSelect: livingSelect,
-                            img : photo.name
+                            img : photoName
                         });
 
                         console.log(credentials)

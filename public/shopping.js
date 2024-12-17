@@ -30,6 +30,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 [Math.floor( num )]: val
             });
         }
+        houseForm.reset();
     });
 
 
@@ -72,6 +73,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         [Math.floor( num )]: val
                     });
                 }
+                personalForm.reset();
             });
 
 

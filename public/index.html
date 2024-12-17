@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Forest Ln</title>
+    <script src="index.js"></script>
+    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+
+
+
+    <!-- update the version number as needed -->
+    <script defer src="/__/firebase/10.12.2/firebase-app-compat.js"></script>
+    <!-- include only the Firebase features as you need -->
+    <script defer src="/__/firebase/10.12.2/firebase-auth-compat.js"></script>
+    <script defer src="/__/firebase/10.12.2/firebase-database-compat.js"></script>
+    <script defer src="/__/firebase/10.12.2/firebase-storage-compat.js"></script>
+    <script defer src="/__/firebase/10.12.2/firebase-remote-config-compat.js"></script>
+
+
+    <!--<script defer src="/__/firebase/10.12.2/firebase-firestore-compat.js"></script>
+    <script defer src="/__/firebase/10.12.2/firebase-functions-compat.js"></script>
+    <script defer src="/__/firebase/10.12.2/firebase-messaging-compat.js"></script>
+    <script defer src="/__/firebase/10.12.2/firebase-analytics-compat.js"></script>
+    <script defer src="/__/firebase/10.12.2/firebase-remote-config-compat.js"></script>
+    <script defer src="/__/firebase/10.12.2/firebase-performance-compat.js"></script>-->
+    <!-- 
+      initialize the SDK after all desired features are loaded, set useEmulator to false
+      to avoid connecting the SDK to running emulators.
+    -->
+    <script defer src="/__/firebase/init.js?useEmulator=true"></script>
+
+    <style>
+      .user-list-container {
+          width: 100%;
+          overflow: hidden;
+          white-space: nowrap;
+          /*background-color: #f1f1f1;*/
+          padding: 10px 0;
+          /*box-shadow: 0 2px 5px rgba(0,0,0,0.1);*/
+          /*position: fixed;*/
+          left: 0;
+          bottom: 0;
+      }
+      .user-list {
+          display: inline-block;
+          animation: scroll 15s linear infinite;
+      }
+      @keyframes scroll {
+          0% { transform: translateX(100vw); }
+          100% { transform: translateX(-100%); }
+      }
+      .user-item {
+          display: inline-block;
+          margin: 0 15px;
+          text-align: center;
+      }
+      .user-item img {
+          border-radius: 50%;
+          width: 50px;
+          height: 50px;
+          object-fit: cover;
+          margin-bottom: 5px;
+      }
+      .user-item span {
+          display: block;
+      }
+
+
+
+      /*FORM*/
+      .form-container {
+    background-color: #fff;
+    /*padding: 20px;*/
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    text-align: center;
+}
+
+h2 {
+    /*margin-bottom: 20px;*/
+    font-size: 24px;
+    color: #333;
+}
+
+.form-group {
+    /*margin-bottom: 15px;*/
+    text-align: left;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #000000;
+}
+
+textarea {
+    width: calc(100% - 20px);
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    resize: vertical;
+}
+
+input[type="file"] {
+    width: 100%;
+    padding: 10px 0;
+}
+
+button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    background-color: #000000;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+  </style>
+
+
+  </head>
+  <body style="width:100%">
+    <div class="topnav" id="myTopnav">
+      <a href="/" class="active">Home</a>
+      <a href="/shopping.html">Shopping List</a>
+      <a href="/chores.html">Chore List</a>
+      <a href="/poop.html">Poop Tracker</a>
+      <a href="/beer.html">Beer Tracker</a>
+      <a onclick="firebase.auth().signOut()">Logout</a>
+      <a href="/profile.html"><img id="userImage" src="" alt="User Image" class="user-image"></a>
+      <a href="javascript:void(0);" class="icon" onclick="myFunction()">
+        <i class="fa fa-bars"></i>
+      </a>
+    </div>
+    
+    
+  <div>
+      <!-- Main content of the page can go here -->
+      <h1 style="text-align: center;">Welcome to Forest Lane</h1>
+      <p style="text-align: center;">Most awesomest website for freeaking miles</p>
+  </div>
+
+  <span style="display:flex; flex-wrap: wrap; width:100%">
+    
+    <div class="image-quote" id="imageQuote" style="width: 100%; text-align: center;">
+        <img id="randomImage" src="..." alt="Random Image" style="width: 70%; height: auto; max-height: 50rem;">
+        <p id="randomQuote">"Generic Quote!"</p>
+
+
+        <form id="quoteForm">
+          <div class="form-group">
+              <label for="quoteInput">Quote:</label>
+              <textarea style="width: 70%;" id="quoteInput" name="quote" rows="2" placeholder="Only use single quotes ' ' " ></textarea>
+          </div>
+          <div class="form-group">
+              <label for="imageInput">Upload Image:</label>
+              <input type="file" id="imageInput" name="image" accept="image/*" >
+          </div>
+          <button type="submit">Submit</button>
+      </form>
+
+    </div>
+
+
+      </span>
+
+
+
+
+
+  <footer class="user-list-container">
+    <div id="footerDIV" class="user-list">
+    </div>
+  </footer>
+    
+    <script>
+    function myFunction() {
+      var x = document.getElementById("myTopnav");
+      if (x.className === "topnav") {
+        x.className += " responsive";
+      } else {
+        x.className = "topnav";
+      }
+    }
+    </script>
+
+
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        const loadEl = document.querySelector('#load');
+        // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
+        // // The Firebase SDK is initialized and available here!
+        //
+        // firebase.auth().onAuthStateChanged(user => { });
+        // firebase.database().ref('/path/to/ref').on('value', snapshot => { });
+        // firebase.firestore().doc('/foo/bar').get().then(() => { });
+        // firebase.functions().httpsCallable('yourFunction')().then(() => { });
+        // firebase.messaging().requestPermission().then(() => { });
+        // firebase.storage().ref('/path/to/ref').getDownloadURL().then(() => { });
+        // firebase.analytics(); // call to activate
+        // firebase.analytics().logEvent('tutorial_completed');
+        // firebase.performance(); // call to activate
+        //
+        // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
+
+        
+      });
+    </script>
+  </body>
+</html>

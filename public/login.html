@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <script src="login.js"></script>
+    <link rel="stylesheet" href="login.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+    
+    <!-- update the version number as needed -->
+    <script defer src="/__/firebase/10.12.2/firebase-app-compat.js"></script>
+    <!-- include only the Firebase features as you need -->
+    <script defer src="/__/firebase/10.12.2/firebase-auth-compat.js"></script>
+    <script defer src="/__/firebase/10.12.2/firebase-database-compat.js"></script>
+    <script defer src="/__/firebase/10.12.2/firebase-storage-compat.js"></script>
+    <!--<script defer src="/__/firebase/10.12.2/firebase-firestore-compat.js"></script>
+    <script defer src="/__/firebase/10.12.2/firebase-functions-compat.js"></script>
+    <script defer src="/__/firebase/10.12.2/firebase-messaging-compat.js"></script>
+    <script defer src="/__/firebase/10.12.2/firebase-analytics-compat.js"></script>
+    <script defer src="/__/firebase/10.12.2/firebase-remote-config-compat.js"></script>
+    <script defer src="/__/firebase/10.12.2/firebase-performance-compat.js"></script>-->
+    <!-- 
+      initialize the SDK after all desired features are loaded, set useEmulator to false
+      to avoid connecting the SDK to running emulators.
+    -->
+    <script defer src="/__/firebase/init.js?useEmulator=true"></script>
+
+
+</head>
+<body>
+    <div class="login-card">
+        <h2>Login</h2>
+        <label for="userSelect">Select User:</label>
+        <div class="dropdown">
+            <select id="userSelect">
+                <!--<option value="" disabled selected>Select a user</option>
+                <option value="Cumbert" data-img="user1.jpg">Cumbert</option> -->
+            </select>
+            <img id="userImage" src="" alt="User Image" class="user-image">
+        </div>
+        <button class="login-button" id="loginButton" >Login</button>
+
+        <h2>Create Account</h2>
+        <form id="createAccountForm">
+            <label for="newUsername">Username:</label>
+            <input type="text" placeholder="Amorgius Prime" id="newUsername" name="newUsername" required>
+
+            <!--<label for="newPassword">Password:</label>
+            <input type="password" id="newPassword" name="newPassword" required>-->
+
+            <label for="livingSelect">Do you live here?:</label>
+            <div class="dropdown">
+                <select id="livingSelect">
+                    <option value="" disabled selected>Select</option>
+                    <option value="y">Yessir</option>
+                    <option value="n">Just visiting</option>
+                </select>
+            </div>
+
+            <label for="uploadPhoto">Upload Photo:</label>
+            <input type="file" id="uploadPhoto" name="uploadPhoto" accept="image/*" required>
+            <p id="errorID" style="color:red"></p>
+            <progress id="uploadProgress" value="0" max="100"></progress>
+            <button type="submit" class="create-account-button">Create Account</button>
+        </form>
+    </div>
+
+    <!--<script>
+        const userSelect = document.getElementById('userSelect');
+        const userImage = document.getElementById('userImage');
+
+        userSelect.addEventListener('change', function() {
+            const selectedOption = this.options[this.selectedIndex];
+            const imgSrc = selectedOption.getAttribute('data-img');
+            userImage.src = imgSrc;
+        });
+    </script>-->
+</body>
+</html>

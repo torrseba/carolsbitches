@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Forest Ln</title>
+    <!--<script src="index.js"></script>-->
+    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="beer.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
+
+
+
+    <script src="/beer.js"></script>
+
+
+
+    <!-- update the version number as needed -->
+    <script defer src="/__/firebase/10.12.2/firebase-app-compat.js"></script>
+    <!-- include only the Firebase features as you need -->
+    <script defer src="/__/firebase/10.12.2/firebase-auth-compat.js"></script>
+    <script defer src="/__/firebase/10.12.2/firebase-database-compat.js"></script>
+    <script defer src="/__/firebase/10.12.2/firebase-storage-compat.js"></script>
+    <!--<script defer src="/__/firebase/10.12.2/firebase-remote-config-compat.js"></script>-->
+
+
+    <!--<script defer src="/__/firebase/10.12.2/firebase-firestore-compat.js"></script>
+    <script defer src="/__/firebase/10.12.2/firebase-functions-compat.js"></script>
+    <script defer src="/__/firebase/10.12.2/firebase-messaging-compat.js"></script>
+    <script defer src="/__/firebase/10.12.2/firebase-analytics-compat.js"></script>
+    <script defer src="/__/firebase/10.12.2/firebase-remote-config-compat.js"></script>
+    <script defer src="/__/firebase/10.12.2/firebase-performance-compat.js"></script>-->
+    <!-- 
+      initialize the SDK after all desired features are loaded, set useEmulator to false
+      to avoid connecting the SDK to running emulators.
+    -->
+    <script defer src="/__/firebase/init.js?useEmulator=true"></script>
+    
+
+  </head>
+  <body>
+    <div class="topnav" id="myTopnav">
+      <a href="/" class="active">Home</a>
+      <a href="/shopping.html">Shopping List</a>
+      <a href="/chores.html">Chore List</a>
+      <a href="/poop.html">Poop Tracker</a>
+      <a href="/beer.html">Beer Tracker</a>
+      <a onclick="firebase.auth().signOut()">Logout</a>
+      <a href="/profile.html"><img id="userImage" src="" alt="User Image" class="user-image"></a>
+      <a href="javascript:void(0);" class="icon" onclick="myFunction()">
+        <i class="fa fa-bars"></i>
+      </a>
+    </div>
+    
+    <div class="container">
+        <h1>Beer Tracker</h1>
+        <div class="controls">
+            <button id="addBeerButton">Add Beer</button>
+        </div>
+        <span style="display: flex; flex-wrap: wrap;">
+            <div class="chart-container" style="width: 50%; min-width: 20rem; height: 100%; min-height: 20rem; display: flex;">
+                <canvas id="beerChart"></canvas>
+            </div>
+
+            <div class="chart-container" style="width: 50%; min-width: 20rem; height: 50%; min-height: 20rem; display: flex;">
+                <canvas id="beerChart24hr"></canvas>
+            </div>
+          </span>
+      </div>
+
+    <div>
+      <h1 style="text-align: center;">Top Beerer</h1>
+      <div class="podium-container">
+        <div class="podium">
+          <div class="podium__front podium__left">
+            <div class="">2</div>
+            <div class="podium__image"><img id="podium2" src="https://source.unsplash.com/random/100x100" alt=""></div>
+          </div>
+          <div class="podium__front podium__center">
+            <div class="">1</div>
+            <div class="podium__image"><img id="podium1" src="https://source.unsplash.com/random/100x100" alt=""></div>
+          </div>
+          <div class="podium__front podium__right">
+            <div class="">3</div>
+            <div class="podium__image"><img id="podium3" src="https://source.unsplash.com/random/100x100" alt=""></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="image-quote" id="imageQuote" style="width: 100%; text-align: center;">
+        <h1 style="text-align: center;">Alcoholic of the Day</h1>
+        <img id="daybeerImage" src="..." alt="Random Image" style="width: 50%; height: auto; max-height: 50rem; border-radius: 50%; width: 80px; height: 80px; object-fit: cover;">
+        <p id="beererofday"></p>
+      </div>
+
+    </div>
+
+    <div style="text-align: center;">
+      <h1 style="text-align: center;">Leaderboard</h1>
+      <ol id="leaderboardlist">
+      </ol>
+    </div>
+    
+    <script>
+    function myFunction() {
+      var x = document.getElementById("myTopnav");
+      if (x.className === "topnav") {
+        x.className += " responsive";
+      } else {
+        x.className = "topnav";
+      }
+    }
+    </script>
+
+
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        const loadEl = document.querySelector('#load');
+        // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
+        // // The Firebase SDK is initialized and available here!
+        //
+        // firebase.auth().onAuthStateChanged(user => { });
+        // firebase.database().ref('/path/to/ref').on('value', snapshot => { });
+        // firebase.firestore().doc('/foo/bar').get().then(() => { });
+        // firebase.functions().httpsCallable('yourFunction')().then(() => { });
+        // firebase.messaging().requestPermission().then(() => { });
+        // firebase.storage().ref('/path/to/ref').getDownloadURL().then(() => { });
+        // firebase.analytics(); // call to activate
+        // firebase.analytics().logEvent('tutorial_completed');
+        // firebase.performance(); // call to activate
+        //
+        // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
+
+        
+      });
+    </script>
+  </body>
+</html>
